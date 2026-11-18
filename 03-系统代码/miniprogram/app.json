@@ -1,0 +1,36 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/book/book",
+    "pages/appts/appts",
+    "pages/visits/visits",
+    "pages/login/login",
+    "pages/slots/slots",
+    "pages/confirm/confirm",
+    "pages/resched/resched",
+    "pages/invoices/invoices",
+    "pages/notices/notices"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarTitleText": "ADC 诊疗",
+    "navigationBarBackgroundColor": "#1b2b46",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f3f5f8"
+  },
+  "tabBar": {
+    "color": "#8a94a6",
+    "selectedColor": "#1f6fd0",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "我的" },
+      { "pagePath": "pages/book/book", "text": "去预约" },
+      { "pagePath": "pages/appts/appts", "text": "我的预约" },
+      { "pagePath": "pages/visits/visits", "text": "就诊记录" }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

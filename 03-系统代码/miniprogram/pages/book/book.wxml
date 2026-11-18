@@ -1,0 +1,29 @@
+<view class="wrap">
+  <view style="padding:12rpx 8rpx 28rpx">
+    <view class="h1">去预约</view>
+    <view class="sub">先选门店，再挑日期和时段</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card"><view class="empty">加载中…</view></view>
+
+  <block wx:else>
+    <view wx:for="{{clinics}}" wx:key="clinic_id"
+          class="opt {{item.clinic_id === cid ? 'on' : ''}}"
+          data-id="{{item.clinic_id}}" bindtap="pick">
+      <view>
+        <view class="t">{{item.clinic_name}}</view>
+        <view class="s">{{item.postal_address || '地址待补'}}</view>
+        <view class="s">{{item.phone || ''}}</view>
+      </view>
+      <view class="tag blue">选这家</view>
+    </view>
+
+    <view class="card" style="margin-top:24rpx">
+      <view class="card-title">怎么约</view>
+      <view class="muted">
+        点上面任意一家门店，会列出这家店未来两周的号。
+        选日期 → 选时段 → 核对一下提交，提交后这个号就占住了。
+      </view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,68 @@
+<view class="wrap pad-bottom">
+  <view style="padding:12rpx 8rpx 24rpx">
+    <view class="h1">我的预约</view>
+    <view class="sub">全部预约记录。被取消的会写明原因，可以直接重新预约</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card"><view class="empty">加载中…</view></view>
+
+  <block wx:else>
+    <view class="card">
+      <view class="card-title">待就诊</view>
+      <block wx:if="{{upcoming.length}}">
+        <view wx:for="{{upcoming}}" wx:key="appointment_id"
+              style="padding:20rpx 0; border-bottom:1rpx solid #eef1f5">
+          <view style="display:flex; justify-content:space-between; align-items:flex-start">
+            <view>
+              <view class="strong" style="font-size:30rpx">
+                {{item.roster_date}} {{item.slot_start}} — {{item.slot_end}}
+              </view>
+              <view class="muted" style="margin-top:4rpx">
+                {{item.clinic_name}} · {{item.dentist}}
+              </view>
+              <view class="muted" style="font-size:23rpx">{{item.appointment_no}}</view>
+            </view>
+            <view class="tag {{item.tag}}">{{item.status}}</view>
+          </view>
+          <view class="btn-row" style="margin-top:14rpx">
+            <button class="btn ghost btn-sm" data-id="{{item.appointment_id}}"
+                    bindtap="resched">改约</button>
+            <button class="btn warn btn-sm" data-id="{{item.appointment_id}}"
+                    bindtap="cancel">取消</button>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="empty">
+        还没有待就诊的预约
+      </view>
+      <button wx:if="{{!upcoming.length}}" class="btn" style="margin-top:16rpx"
+              bindtap="goBook">去预约</button>
+    </view>
+
+    <view class="card">
+      <view class="card-title">历史</view>
+      <block wx:if="{{history.length}}">
+        <view wx:for="{{history}}" wx:key="appointment_id" class="row"
+              style="align-items:flex-start">
+          <view>
+            <view class="strong">{{item.roster_date}} {{item.slot_start}}</view>
+            <view class="muted" style="font-size:24rpx">
+              {{item.clinic_name}} · {{item.dentist}}
+            </view>
+            <view wx:if="{{item.why}}" class="muted" style="font-size:23rpx; color:#9a6b00">
+              {{item.why}}
+            </view>
+          </view>
+          <view style="text-align:right">
+            <view class="tag {{item.tag}}">{{item.status}}</view>
+            <view wx:if="{{item.status === '已取消' || item.status === '爽约'}}"
+                  style="margin-top:10rpx">
+              <button class="btn ghost btn-sm" bindtap="goBook">重新预约</button>
+            </view>
+          </view>
+        </view>
+      </block>
+      <view wx:else class="empty">还没有历史记录</view>
+    </view>
+  </block>
+</view>

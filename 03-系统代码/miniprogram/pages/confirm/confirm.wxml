@@ -1,0 +1,62 @@
+<view class="wrap pad-bottom">
+  <view style="padding:12rpx 8rpx 24rpx">
+    <view class="h1">确认预约</view>
+    <view class="sub">核对一下，没问题再提交；提交后才算占住这个号</view>
+  </view>
+
+  <view wx:if="{{err}}" class="note bad">{{err}}</view>
+
+  <view class="card">
+    <view class="card-title">这次预约</view>
+    <view class="row"><text class="k">门店</text><text class="v">{{clinic}}</text></view>
+    <view class="row"><text class="k">日期</text><text class="v strong">{{date}}</text></view>
+    <view class="row"><text class="k">时段</text><text class="v strong">{{start}} — {{end}}</text></view>
+    <view class="row"><text class="k">接诊牙医</text><text class="v">{{dentist || '待定'}}</text></view>
+    <view class="row">
+      <text class="k">余位</text>
+      <text class="v">剩 {{left}} 位（提交前仍可能被别人约走）</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">就诊人</view>
+    <view wx:if="{{patients.length > 1}}" class="muted" style="margin-bottom:12rpx">
+      这个账号名下有 {{patients.length}} 位就诊人，这次是给谁看？
+    </view>
+    <view wx:for="{{patients}}" wx:key="patient_id"
+          class="opt {{item.patient_id === pid ? 'on' : ''}}"
+          data-id="{{item.patient_id}}" bindtap="pickPatient">
+      <view>
+        <view class="t">{{item.name}}</view>
+        <view class="s">{{item.patient_no}}</view>
+      </view>
+      <view class="tag gray">{{item.phone || '未留手机'}}</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">联系方式与来意</view>
+    <view class="field">
+      <view class="lab">联系电话</view>
+      <input data-k="phone" value="{{phone}}" bindinput="onInput" type="number"
+             placeholder="方便前台联系你" />
+    </view>
+    <view class="field" style="margin-bottom:0">
+      <view class="lab">就诊原因（选填）</view>
+      <textarea data-k="reason" value="{{reason}}" bindinput="onInput"
+                placeholder="如：右上后牙咬合痛三天 / 要求洗牙 / 复查" />
+    </view>
+    <view class="muted" style="margin-top:12rpx; font-size:23rpx">
+      留了电话和来意，前台能提前备东西，医生也能提前看一眼。
+    </view>
+  </view>
+</view>
+
+<view class="footer">
+  <view class="btn-row">
+    <button class="btn" bindtap="submit" disabled="{{busy}}">
+      {{busy ? '提交中…' : '确认预约'}}
+    </button>
+    <button class="btn ghost" bindtap="back">取消</button>
+  </view>
+</view>

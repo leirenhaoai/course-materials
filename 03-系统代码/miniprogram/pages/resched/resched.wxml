@@ -1,0 +1,54 @@
+<view class="wrap">
+  <view style="padding:12rpx 8rpx 24rpx">
+    <view class="h1">改约</view>
+    <view class="sub">从下面的空位里挑一个；原时段会自动释放</view>
+  </view>
+
+  <view wx:if="{{cur}}" class="card">
+    <view class="card-title">当前预约</view>
+    <view class="row">
+      <text class="k">原预约</text>
+      <text class="v strong">{{cur.date}} {{cur.start}} — {{cur.end}}</text>
+    </view>
+    <view class="row"><text class="k">门店</text><text class="v">{{cur.clinic_name}}</text></view>
+    <view class="row"><text class="k">牙医</text><text class="v">{{cur.dentist}}</text></view>
+  </view>
+
+  <view class="card">
+    <view class="card-title" style="display:flex; justify-content:space-between">
+      <text>{{date}}</text>
+      <view>
+        <text class="tag gray" bindtap="prevDay" style="margin-right:12rpx">前一天</text>
+        <text class="tag gray" bindtap="afterDay">后一天</text>
+      </view>
+    </view>
+
+    <view wx:if="{{loading}}" class="empty">查空位中…</view>
+
+    <block wx:elif="{{slots.length}}">
+      <view wx:for="{{slots}}" wx:key="roster_id"
+            class="opt {{item.left ? '' : 'full'}}"
+            data-id="{{item.roster_id}}" bindtap="pick">
+        <view>
+          <view class="t">{{item.start}} — {{item.end}}</view>
+          <view class="s">{{item.dentist || '医生待定'}}</view>
+        </view>
+        <view wx:if="{{item.left}}" class="tag green">剩 {{item.left}} 位</view>
+        <view wx:else class="tag gray">已满</view>
+      </view>
+    </block>
+
+    <view wx:else class="empty">这一天没有空位，前后翻翻看</view>
+  </view>
+
+  <view class="card">
+    <view class="muted" style="font-size:24rpx">
+      改约是把这条预约挪到新时段，不是取消再新建，
+      所以预约号不变、也不会算你一次爽约。
+    </view>
+  </view>
+
+  <view class="btn-row" style="margin-top:8rpx">
+    <button class="btn ghost" bindtap="back">返回我的预约</button>
+  </view>
+</view>

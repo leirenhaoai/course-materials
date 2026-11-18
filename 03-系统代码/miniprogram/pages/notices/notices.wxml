@@ -1,0 +1,31 @@
+<view class="wrap pad-bottom">
+  <view style="padding:12rpx 8rpx 24rpx">
+    <view class="h1">通知</view>
+    <view class="sub">停诊、改约、收款这些影响到你的事，系统会在这里留一条</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card"><view class="empty">加载中…</view></view>
+
+  <block wx:elif="{{list.length}}">
+    <view wx:for="{{list}}" wx:key="notice_id" class="card">
+      <view style="display:flex; justify-content:space-between; align-items:flex-start">
+        <view>
+          <view class="strong">{{item.title}}</view>
+          <view class="muted" style="font-size:23rpx">{{item.created_at}}</view>
+        </view>
+        <view wx:if="{{!item.is_read}}" class="tag amber">未读</view>
+      </view>
+      <view style="margin-top:12rpx; line-height:1.75; font-size:27rpx">
+        {{item.body}}
+      </view>
+      <view wx:if="{{item.kind === '停诊'}}" class="btn-row" style="margin-top:16rpx">
+        <button class="btn ghost btn-sm" bindtap="goBook">重新预约</button>
+        <button class="btn ghost btn-sm" bindtap="goAppts">看我的预约</button>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="card">
+    <view class="empty">暂时没有通知</view>
+  </view>
+</view>

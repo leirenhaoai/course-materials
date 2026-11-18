@@ -1,0 +1,45 @@
+<view class="wrap">
+  <view style="padding:12rpx 8rpx 24rpx; display:flex; justify-content:space-between; align-items:flex-end">
+    <view>
+      <view class="h1">{{clinic_name || '选时段'}}</view>
+      <view class="sub">选日期，再点一个还有号的时段</view>
+    </view>
+    <view class="tag gray" bindtap="changeClinic">换门店</view>
+  </view>
+
+  <scroll-view scroll-x class="days" enable-flex>
+    <view wx:for="{{days}}" wx:key="date"
+          class="day {{item.date === date ? 'on' : ''}}"
+          data-d="{{item.date}}" bindtap="pickDay">
+      <view class="d">{{item.md}}</view>
+      <view class="w">周{{item.w}}</view>
+      <view class="r {{item.remain ? '' : 'zero'}}">{{item.remain ? '剩' + item.remain : '无号'}}</view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{loadingSlots}}" class="card"><view class="empty">查号中…</view></view>
+
+  <block wx:elif="{{slots.length}}">
+    <view wx:for="{{slots}}" wx:key="roster_id"
+          class="opt {{item.full ? 'full' : ''}}"
+          data-i="{{index}}" bindtap="pickSlot">
+      <view>
+        <view class="t">{{item.start}} — {{item.end}}</view>
+        <view class="s">{{item.dentist || '医生待定'}}</view>
+      </view>
+      <view wx:if="{{item.full}}" class="tag gray">已约满</view>
+      <view wx:else class="tag green">剩 {{item.left}} 位</view>
+    </view>
+  </block>
+
+  <view wx:else class="card">
+    <view class="empty">这一天这家店没有放过号，换一天看看</view>
+  </view>
+
+  <view class="card">
+    <view class="muted" style="font-size:24rpx">
+      号是实时占的：你看到「剩 N 位」的时候别人也可能同时在点，
+      提交时如果刚好被抢完，会提示你换一个。
+    </view>
+  </view>
+</view>

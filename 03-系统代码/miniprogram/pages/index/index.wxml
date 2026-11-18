@@ -1,0 +1,79 @@
+<view class="wrap pad-bottom">
+
+  <view style="padding:12rpx 8rpx 28rpx; display:flex; justify-content:space-between; align-items:flex-end">
+    <view>
+      <view class="h1">我的</view>
+      <view class="sub">预约、查档案、看账单</view>
+    </view>
+    <view wx:if="{{me && me.unread}}" class="tag red" bindtap="goNotices">
+      通知 {{me.unread}}
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card"><view class="empty">加载中…</view></view>
+
+  <block wx:else>
+    <!-- 下一页就诊：最显眼的一块 -->
+    <view wx:if="{{me.next}}" class="card focus" bindtap="goAppts">
+      <view class="sub">下一次就诊</view>
+      <view class="big" style="margin:8rpx 0">{{me.next.roster_date}} {{me.next.slot_start}}</view>
+      <view class="muted" style="font-size:27rpx">
+        {{me.next.clinic_name}} · {{me.next.dentist}} · 至 {{me.next.slot_end}}
+      </view>
+      <view class="muted" style="margin-top:8rpx; font-size:23rpx">
+        {{me.next.appointment_no}}
+      </view>
+    </view>
+
+    <view wx:else class="card focus">
+      <view class="sub">下一次就诊</view>
+      <view class="big" style="margin:8rpx 0">还没有预约</view>
+      <view class="muted" bindtap="goBook">点这里挑个时段 →</view>
+    </view>
+
+    <!-- 三格数据 -->
+    <view class="stats" style="margin-bottom:24rpx">
+      <view class="stat" bindtap="goAppts">
+        <view class="n">{{me.pending}}</view>
+        <view class="l">待就诊</view>
+      </view>
+      <view class="stat" bindtap="goVisits">
+        <view class="n">{{me.history}}</view>
+        <view class="l">历史就诊</view>
+      </view>
+      <view class="stat" bindtap="goInvoices">
+        <view class="n" style="font-size:32rpx">{{me.paidText}}</view>
+        <view class="l">累计支付（元）</view>
+      </view>
+    </view>
+
+    <!-- 就诊人 -->
+    <view wx:if="{{me.patients.length > 1}}" class="card">
+      <view class="card-title">这个账号名下的就诊人</view>
+      <view class="row" wx:for="{{me.patients}}" wx:key="patient_id">
+        <text class="k">{{item.name}}</text>
+        <text class="v">{{item.phone || '未留手机'}}</text>
+      </view>
+      <view class="muted" style="margin-top:10rpx; font-size:23rpx">
+        一个账号可以给家里人挂号，下单时会让你选给谁。
+      </view>
+    </view>
+
+    <!-- 快捷入口 -->
+    <view class="card">
+      <view class="card-title">常用</view>
+      <view class="btn-row" style="margin-bottom:16rpx">
+        <button class="btn" bindtap="goBook">去预约</button>
+        <button class="btn ghost" bindtap="goAppts">我的预约</button>
+      </view>
+      <view class="btn-row">
+        <button class="btn ghost" bindtap="goVisits">就诊记录</button>
+        <button class="btn ghost" bindtap="goInvoices">账单</button>
+      </view>
+      <view class="btn-row" style="margin-top:16rpx">
+        <button class="btn ghost" bindtap="goNotices">通知</button>
+        <button class="btn warn" bindtap="logout">退出登录</button>
+      </view>
+    </view>
+  </block>
+</view>

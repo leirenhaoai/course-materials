@@ -1,0 +1,50 @@
+<view class="wrap pad-bottom">
+  <view style="padding:12rpx 8rpx 24rpx">
+    <view class="h1">账单</view>
+    <view class="sub">应收 = 治疗项目合计，已收 = 实付合计</view>
+  </view>
+
+  <view class="stats" style="margin-bottom:24rpx">
+    <view class="stat">
+      <view class="n" style="font-size:32rpx">{{sum.due}}</view>
+      <view class="l">应收</view>
+    </view>
+    <view class="stat">
+      <view class="n" style="font-size:32rpx">{{sum.got}}</view>
+      <view class="l">已收</view>
+    </view>
+    <view class="stat">
+      <view class="n" style="font-size:32rpx; color:#c93a3a">{{sum.owe}}</view>
+      <view class="l">还欠</view>
+    </view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card"><view class="empty">加载中…</view></view>
+
+  <block wx:elif="{{invoices.length}}">
+    <view wx:for="{{invoices}}" wx:key="invoice_id" class="card">
+      <view style="display:flex; justify-content:space-between; align-items:flex-start">
+        <view>
+          <view class="strong" style="font-size:29rpx">{{item.invoice_no}}</view>
+          <view class="muted">{{item.invoice_date}} · {{item.clinic_name}}</view>
+          <view class="muted" style="font-size:23rpx">就诊人 {{item.patient}}</view>
+        </view>
+        <view class="tag {{item.tag}}">{{item.stText}}</view>
+      </view>
+      <view class="row"><text class="k">应收</text><text class="v">{{item.dueText}} 元</text></view>
+      <view class="row"><text class="k">已收</text><text class="v">{{item.gotText}} 元</text></view>
+      <view wx:if="{{item.owe > 0.01}}" class="row">
+        <text class="k">还欠</text>
+        <text class="v" style="color:#c93a3a">{{item.oweText}} 元</text>
+      </view>
+      <view wx:if="{{item.owe > 0.01}}" class="muted"
+            style="margin-top:10rpx; font-size:23rpx">
+        欠费到店补交就可以，前台也能看到这张单。
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="card">
+    <view class="empty">还没有结算单</view>
+  </view>
+</view>

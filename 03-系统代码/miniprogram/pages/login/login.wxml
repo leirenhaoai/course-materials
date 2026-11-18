@@ -1,0 +1,61 @@
+<view class="wrap">
+  <view style="padding:60rpx 8rpx 40rpx">
+    <view class="h1">ADC 诊疗管理系统</view>
+    <view class="sub">安德鲁牙科连锁 · 患者端</view>
+  </view>
+
+  <view class="card">
+    <view wx:if="{{tip}}" class="note bad">{{tip}}</view>
+
+    <view class="field">
+      <view class="lab">登录名</view>
+      <input data-k="login_name" value="{{login_name}}" bindinput="onInput"
+             placeholder="如 zhangsan" />
+    </view>
+
+    <view class="field">
+      <view class="lab">口令</view>
+      <input data-k="password" value="{{password}}" bindinput="onInput"
+             password placeholder="至少 6 位" />
+    </view>
+
+    <block wx:if="{{mode === 'register'}}">
+      <view class="field">
+        <view class="lab">就诊人姓名</view>
+        <input data-k="patient_name" value="{{patient_name}}" bindinput="onInput"
+               placeholder="建档用的名字" />
+      </view>
+      <view class="field">
+        <view class="lab">手机号（选填）</view>
+        <input data-k="phone" value="{{phone}}" bindinput="onInput"
+               type="number" placeholder="前台联系用" />
+      </view>
+    </block>
+
+    <button class="btn" bindtap="submit" disabled="{{busy}}">
+      {{busy ? '请稍候…' : (mode === 'register' ? '注册并登录' : '登录')}}
+    </button>
+
+    <view style="margin-top:24rpx; text-align:center">
+      <text wx:if="{{mode === 'login'}}" class="muted" bindtap="toRegister">
+        没有账号？点这里注册
+      </text>
+      <text wx:else class="muted" bindtap="toLogin">已有账号，去登录</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">演示账号</view>
+    <view class="muted">口令都是 123456</view>
+    <view class="row">
+      <text class="k">患者</text>
+      <text class="v" bindtap="useDemo">zhangsan / lisi（点一下填入）</text>
+    </view>
+    <view style="margin-top:16rpx">
+      <text class="muted">
+        员工账号（recept1 / dentist1 / manager1 / ops1 / finance1）请用电脑上的网页端登录，
+        小程序只做患者端。
+      </text>
+    </view>
+  </view>
+</view>

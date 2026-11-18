@@ -1,0 +1,67 @@
+<view class="wrap pad-bottom">
+  <view style="padding:12rpx 8rpx 24rpx">
+    <view class="h1">就诊记录</view>
+    <view class="sub">点开一条能看到当时的诊断和处置</view>
+  </view>
+
+  <view wx:if="{{loading}}" class="card"><view class="empty">加载中…</view></view>
+
+  <block wx:elif="{{visits.length}}">
+    <view wx:for="{{visits}}" wx:key="visit_id" class="card"
+          data-i="{{index}}" bindtap="toggle">
+      <view style="display:flex; justify-content:space-between; align-items:flex-start">
+        <view>
+          <view class="strong" style="font-size:30rpx">{{item.dateText}}</view>
+          <view class="muted">{{item.clinic_name}} · {{item.dentist}}</view>
+          <view class="muted" style="font-size:23rpx">
+            就诊人 {{item.patient}} · {{item.visit_no}}
+          </view>
+        </view>
+        <view style="text-align:right">
+          <view wx:if="{{item.invoice_no}}" class="tag blue">{{item.invoice_no}}</view>
+          <view wx:if="{{item.invoice_no}}" class="strong" style="margin-top:8rpx">
+            {{item.gotText}} 元
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{open === index}}" style="margin-top:20rpx; padding-top:16rpx;
+            border-top:1rpx solid #eef1f5">
+        <view class="row" wx:if="{{item.chief_complaint}}">
+          <text class="k">主诉</text><text class="v">{{item.chief_complaint}}</text>
+        </view>
+        <view class="row" wx:if="{{item.diagnosis}}">
+          <text class="k">诊断</text><text class="v">{{item.diagnosis}}</text>
+        </view>
+        <view class="row" wx:if="{{item.treatment_note}}">
+          <text class="k">处置</text><text class="v">{{item.treatment_note}}</text>
+        </view>
+        <view class="row" wx:if="{{item.invoice_no}}">
+          <text class="k">应收 / 已收</text>
+          <text class="v">{{item.dueText}} / {{item.gotText}}</text>
+        </view>
+        <view class="row" wx:if="{{item.owe > 0}}">
+          <text class="k">还欠</text>
+          <text class="v" style="color:#c93a3a">{{item.oweText}} 元</text>
+        </view>
+        <view wx:if="{{!item.chief_complaint && !item.diagnosis && !item.treatment_note}}"
+              class="muted">这一次医生没有填病历正文。</view>
+      </view>
+
+      <view wx:if="{{open !== index}}" class="muted"
+            style="margin-top:12rpx; font-size:23rpx">
+        点开看详情
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="card">
+    <view class="empty">还没有就诊记录</view>
+  </view>
+
+  <view class="card">
+    <view class="btn-row">
+      <button class="btn ghost" bindtap="goInvoices">看全部账单</button>
+    </view>
+  </view>
+</view>
